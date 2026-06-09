@@ -1,96 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stream The World</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #333;
-        }
-        
-        .container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            padding: 60px 40px;
-            max-width: 600px;
-            text-align: center;
-        }
-        
-        h1 {
-            color: #667eea;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            color: #666;
-            font-size: 1.2em;
-            margin-bottom: 30px;
-        }
-        
-        p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        .links {
-            margin-top: 30px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            margin: 10px 5px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-        }
-        
-        .btn:hover {
-            background: #764ba2;
-        }
-        
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
-        }
-        
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stream The World — Cinematic Gold</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Inter:wght@300;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --gold: #e6c074;
+    --gold-soft: #f3deae;
+    --gold-deep: #a9802f;
+    --gold-glow: #ffd98a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; background: #04060d; overflow: hidden; }
+  .stage {
+    position: fixed; inset: 0; display: grid; place-items: center;
+    background: radial-gradient(120% 90% at 50% 35%, #0c1424 0%, #070b15 50%, #04060d 100%);
+  }
+
+  /* Light beam sweep that "reveals" the logo */
+  .beam {
+    position: absolute; top: 0; bottom: 0; width: 45vw;
+    left: -50vw;
+    background: linear-gradient(90deg, transparent, rgba(243,222,174,.07) 40%, rgba(255,217,138,.16) 50%, rgba(243,222,174,.07) 60%, transparent);
+    filter: blur(8px);
+    animation: beam 2.2s cubic-bezier(.5,0,.2,1) .2s forwards;
+  }
+  @keyframes beam { 0%{ left:-50vw;} 100%{ left:120vw; } }
+
+  .wrap { position: relative; text-align: center; z-index: 2; }
+
+  .logo {
+    font-family: 'Oswald', sans-serif; font-weight: 700;
+    font-size: clamp(46px, 13vw, 150px); line-height: .92;
+    letter-spacing: .02em;
+    transform: scale(1.12); opacity: 0;
+    animation: settle 2.4s cubic-bezier(.18,.7,.16,1) .35s forwards;
+    position: relative; display: inline-block;
+    background: linear-gradient(180deg, #fff6e0 0%, var(--gold) 58%, var(--gold-deep) 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 38px rgba(230,192,116,.4);
+  }
+
+  /* metallic shine that crosses the text once */
+  .logo::after {
+    content: 'STW'; position: absolute; inset: 0; color: transparent;
+    background: linear-gradient(105deg, transparent 42%, rgba(255,247,224,.95) 50%, transparent 58%);
+    -webkit-background-clip: text; background-clip: text;
+    background-size: 300% 100%; background-position: 180% 0; opacity: 0;
+    animation: shine 1.5s ease 1.5s forwards;
+  }
+  @keyframes settle {
+    0% { opacity: 0; transform: scale(1.12); filter: blur(6px); letter-spacing:.14em; }
+    55% { opacity: 1; filter: blur(0); }
+    100% { opacity: 1; transform: scale(1); letter-spacing:.02em; }
+  }
+  @keyframes shine {
+    0% { opacity: 1; background-position: 180% 0; }
+    100% { opacity: 0; background-position: -120% 0; }
+  }
+
+  .rule {
+    height: 2px; width: 0; margin: 22px auto 0;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    box-shadow: 0 0 16px var(--gold-glow);
+    animation: grow 1s ease 1.9s forwards;
+  }
+  @keyframes grow { to { width: min(70%, 460px); } }
+
+  .tag {
+    margin-top: 18px; font-family: 'Inter', sans-serif; font-weight: 300;
+    font-size: clamp(11px, 2.6vw, 17px); letter-spacing: .62em; padding-left:.62em;
+    text-transform: uppercase; color: #cfd6e6; opacity: 0;
+    animation: fade 1.1s ease 2.2s forwards;
+  }
+  .slogan {
+    margin-top: 22px; font-family: 'Inter', sans-serif; font-weight: 300;
+    font-style: italic; font-size: clamp(13px, 2.9vw, 22px);
+    letter-spacing: .08em; color: var(--gold-soft); opacity: 0;
+    text-shadow: 0 0 22px rgba(230,192,116,.35);
+    animation: fade 1.2s ease 2.6s forwards;
+  }
+  @keyframes fade { to { opacity: 1; } }
+
+  .grain { position: absolute; inset: 0; pointer-events:none; opacity:.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  .vignette { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.65) 100%); }
+
+  .replay { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+    font-family: 'Inter',sans-serif; font-size: 12px; letter-spacing: .2em;
+    color: #6b7488; background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12); padding: 8px 18px; border-radius: 999px;
+    cursor: pointer; text-transform: uppercase; }
+  .replay:hover { color: var(--gold); border-color: rgba(230,192,116,.45); }
+
+  .sound-hint { position: fixed; top: 22px; left: 50%; transform: translateX(-50%);
+    font-family: 'Inter',sans-serif; font-size: 12px; letter-spacing: .15em;
+    color: var(--gold-soft); background: rgba(0,0,0,.35);
+    border: 1px solid rgba(230,192,116,.25); padding: 7px 16px; border-radius: 999px;
+    z-index: 10; transition: opacity .6s ease; pointer-events: none; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>🌍 Stream The World</h1>
-        <p class="subtitle">Welcome to STW</p>
-        
-        <p>Stream The World is a dynamic platform for streaming content across the globe. Explore, discover, and share amazing content with the world.</p>
-        
-        <div class="links">
-            <a href="https://github.com/Orionstreamz/STW" class="btn">View on GitHub</a>
-            <a href="#" class="btn btn-secondary">Learn More</a>
-        </div>
+  <div class="stage">
+    <div class="beam"></div>
+    <div class="wrap">
+      <div class="logo">STW</div>
+      <div class="rule"></div>
+      <div class="tag">S T R E A M Z</div>
+      <div class="slogan">Stream Beyond Limits</div>
     </div>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+  </div>
+  <button class="replay" onclick="location.reload()">↻ Replay</button>
+  <audio id="theme" src="theme.m4a" preload="auto"></audio>
+  <div class="sound-hint" id="hint">🔊 Click anywhere for sound</div>
+<script>
+  // Background theme — try autoplay, fall back to first interaction
+  const audio = document.getElementById('theme');
+  const hint = document.getElementById('hint');
+  audio.volume = 0.85;
+  function startAudio() {
+    audio.currentTime = 0;
+    audio.play().then(() => { hint.style.opacity = 0; })
+                .catch(() => {});
+  }
+  startAudio();
+  window.addEventListener('pointerdown', startAudio, { once: true });
+  window.addEventListener('keydown', startAudio, { once: true });
+</script>
 </body>
 </html>
