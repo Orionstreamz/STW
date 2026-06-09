@@ -198,7 +198,7 @@
     border-radius: 999px;
     z-index: 3;
     opacity: 0;
-    animation: fadeIn 1s ease 3s forwards;
+    animation: fadeIn 1s ease 3s forwards, pulse 2s ease-in-out 3.5s infinite;
     cursor: pointer;
     transition: all 0.3s ease;
   }
@@ -210,6 +210,11 @@
   }
 
   @keyframes fadeIn { to { opacity: 1; } }
+  
+  @keyframes pulse {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+  }
 
   /* ── Main Content ──────────────────────────────────────────── */
   .main-content {
@@ -1275,7 +1280,7 @@
   </div>
 
   <script>
-    // Splash screen logic
+    // Splash screen logic - stays until clicked
     const splashScreen = document.getElementById('splashScreen');
     const splashHint = document.getElementById('splashHint');
     const mainContent = document.getElementById('mainContent');
@@ -1285,12 +1290,19 @@
       mainContent.classList.add('visible');
     }
 
-    // Hide splash after 4 seconds or on click
-    setTimeout(hideSplashScreen, 4000);
+    // Only hide on click/enter - no automatic timeout
     splashScreen.addEventListener('click', hideSplashScreen);
     splashHint.addEventListener('click', (e) => {
       e.stopPropagation();
       hideSplashScreen();
+    });
+
+    // Also allow spacebar or Enter key to dismiss
+    document.addEventListener('keydown', (e) => {
+      if ((e.code === 'Space' || e.code === 'Enter') && !splashScreen.classList.contains('hidden')) {
+        e.preventDefault();
+        hideSplashScreen();
+      }
     });
 
     // Mobile nav toggle
