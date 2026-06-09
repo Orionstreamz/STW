@@ -787,6 +787,35 @@
   .footer-copy { font-size: 0.8rem; color: var(--text-muted); }
   .footer-socials { display: flex; gap: 8px; }
 
+  /* ── Audio Player ──────────────────────────────────────────── */
+  .splash-audio-control {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    opacity: 0;
+    animation: fadeIn 1s ease 3s forwards;
+    cursor: pointer;
+  }
+  .audio-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(230,192,116,0.2);
+    border: 1px solid rgba(230,192,116,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 20px;
+    transition: all 0.3s ease;
+  }
+  .audio-btn:hover {
+    background: rgba(230,192,116,0.35);
+    transform: scale(1.1);
+  }
+
   /* ── Responsive ──────────────────────────────────────────────– */
   @media (max-width: 900px) {
     .hero-inner { grid-template-columns: 1fr; gap: 48px; }
@@ -829,8 +858,19 @@
     </div>
     <div class="grain"></div>
     <div class="vignette"></div>
+    
+    <!-- Audio Control -->
+    <div class="splash-audio-control" id="audioControl">
+      <button class="audio-btn" id="audioBtn" title="Toggle Audio">🔊</button>
+    </div>
+    
     <div class="splash-hint" id="splashHint">Click to enter ➜</div>
   </div>
+
+  <!-- Hidden Audio Element -->
+  <audio id="splashAudio" preload="auto">
+    <source src="Splash Intro.wav" type="audio/wav">
+  </audio>
 
   <!-- MAIN CONTENT -->
   <div class="main-content" id="mainContent">
@@ -1280,6 +1320,43 @@
   </div>
 
   <script>
+    // Audio setup
+    const splashAudio = document.getElementById('splashAudio');
+    const audioBtn = document.getElementById('audioBtn');
+    const audioControl = document.getElementById('audioControl');
+    let isAudioPlaying = false;
+
+    // Auto-play audio when page loads (muted initially due to browser policies)
+    const attemptAutoPlay = () => {
+      const playPromise = splashAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          isAudioPlaying = true;
+          updateAudioButton();
+        }).catch(() => {
+          // Auto-play failed, user must interact to start audio
+        });
+      }
+    };
+
+    // Update audio button display
+    const updateAudioButton = () => {
+      audioBtn.textContent = isAudioPlaying ? '🔊' : '🔇';
+    };
+
+    // Audio button click handler
+    audioBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isAudioPlaying) {
+        splashAudio.pause();
+        isAudioPlaying = false;
+      } else {
+        splashAudio.play();
+        isAudioPlaying = true;
+      }
+      updateAudioButton();
+    });
+
     // Splash screen logic - stays until clicked
     const splashScreen = document.getElementById('splashScreen');
     const splashHint = document.getElementById('splashHint');
@@ -1288,6 +1365,7 @@
     function hideSplashScreen() {
       splashScreen.classList.add('hidden');
       mainContent.classList.add('visible');
+      splashAudio.pause();
     }
 
     // Only hide on click/enter - no automatic timeout
@@ -1304,6 +1382,13 @@
         hideSplashScreen();
       }
     });
+
+    // Attempt to auto-play audio when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', attemptAutoPlay);
+    } else {
+      attemptAutoPlay();
+    }
 
     // Mobile nav toggle
     const hamburger = document.getElementById('hamburger');
