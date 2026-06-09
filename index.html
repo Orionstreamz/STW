@@ -12,7 +12,7 @@
 <meta property="og:type" content="website" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Roboto:wght@300;400;500;700&family=Inter:wght@300;500&display=swap" rel="stylesheet" />
 <style>
   /* ── Design tokens with GOLD theme ──────────────────────────── */
   :root {
@@ -49,6 +49,163 @@
   a { color: inherit; text-decoration: none; }
   img { display: block; max-width: 100%; }
   ul { list-style: none; }
+
+  /* ── Splash Screen ──────────────────────────────────────────── */
+  .splash-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(120% 90% at 50% 35%, #0c1424 0%, #070b15 50%, #04060d 100%);
+    overflow: hidden;
+  }
+
+  .splash-screen.hidden {
+    display: none;
+  }
+
+  .beam {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 45vw;
+    left: -50vw;
+    background: linear-gradient(90deg, transparent, rgba(243,222,174,.07) 40%, rgba(255,217,138,.16) 50%, rgba(243,222,174,.07) 60%, transparent);
+    filter: blur(8px);
+    animation: beam 2.2s cubic-bezier(.5,0,.2,1) .2s forwards;
+  }
+
+  @keyframes beam { 0%{ left:-50vw;} 100%{ left:120vw; } }
+
+  .splash-wrap {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .splash-logo {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: clamp(46px, 13vw, 150px);
+    line-height: .92;
+    letter-spacing: .02em;
+    transform: scale(1.12);
+    opacity: 0;
+    animation: settle 2.4s cubic-bezier(.18,.7,.16,1) .35s forwards;
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(180deg, #fff6e0 0%, var(--gold) 58%, var(--gold-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 38px rgba(230,192,116,.4);
+  }
+
+  .splash-logo::after {
+    content: 'ORION';
+    position: absolute;
+    inset: 0;
+    color: transparent;
+    background: linear-gradient(105deg, transparent 42%, rgba(255,247,224,.95) 50%, transparent 58%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-size: 300% 100%;
+    background-position: 180% 0;
+    opacity: 0;
+    animation: shine 1.5s ease 1.5s forwards;
+  }
+
+  @keyframes settle {
+    0% { opacity: 0; transform: scale(1.12); filter: blur(6px); letter-spacing:.14em; }
+    55% { opacity: 1; filter: blur(0); }
+    100% { opacity: 1; transform: scale(1); letter-spacing:.02em; }
+  }
+
+  @keyframes shine {
+    0% { opacity: 1; background-position: 180% 0; }
+    100% { opacity: 0; background-position: -120% 0; }
+  }
+
+  .splash-rule {
+    height: 2px;
+    width: 0;
+    margin: 22px auto 0;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    box-shadow: 0 0 16px var(--gold-glow);
+    animation: grow 1s ease 1.9s forwards;
+  }
+
+  @keyframes grow { to { width: min(70%, 460px); } }
+
+  .splash-tag {
+    margin-top: 18px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: clamp(11px, 2.6vw, 17px);
+    letter-spacing: .62em;
+    padding-left:.62em;
+    text-transform: uppercase;
+    color: #cfd6e6;
+    opacity: 0;
+    animation: fade 1.1s ease 2.2s forwards;
+  }
+
+  .splash-slogan {
+    margin-top: 22px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(13px, 2.9vw, 22px);
+    letter-spacing: .08em;
+    color: var(--gold-soft);
+    opacity: 0;
+    text-shadow: 0 0 22px rgba(230,192,116,.35);
+    animation: fade 1.2s ease 2.6s forwards;
+  }
+
+  @keyframes fade { to { opacity: 1; } }
+
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.65) 100%);
+  }
+
+  .splash-hint {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: .15em;
+    color: var(--gold-soft);
+    background: rgba(0,0,0,.35);
+    border: 1px solid rgba(230,192,116,.25);
+    padding: 7px 16px;
+    border-radius: 999px;
+    z-index: 3;
+    animation: fade 1s ease 3s forwards;
+    cursor: pointer;
+  }
+
+  /* ── Main Content ──────────────────────────────────────────── */
+  .main-content {
+    opacity: 0;
+    animation: contentFade 0.8s ease 3.5s forwards;
+  }
+
+  @keyframes contentFade { to { opacity: 1; } }
 
   /* ── Utilities ──────────────────────────────────────────────── */
   .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
@@ -96,7 +253,8 @@
     font-weight: 500;
   }
   .badge-dot {
-    width: 8px; height: 8px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--gold);
     box-shadow: 0 0 8px var(--gold-glow);
@@ -149,11 +307,14 @@
   }
   .card:hover { border-color: rgba(230,192,116,0.3); transform: translateY(-2px); }
   .card-icon {
-    width: 48px; height: 48px;
+    width: 48px;
+    height: 48px;
     border-radius: var(--radius-sm);
     background: rgba(230,192,116,0.1);
     border: 1px solid rgba(230,192,116,0.25);
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 16px;
     font-size: 1.4rem;
   }
@@ -224,7 +385,8 @@
   }
   .hamburger span {
     display: block;
-    width: 22px; height: 2px;
+    width: 22px;
+    height: 2px;
     background: var(--text-secondary);
     border-radius: 2px;
     transition: all 0.3s;
@@ -255,8 +417,11 @@
     margin-bottom: 16px;
   }
   .mobile-nav-close {
-    width: 32px; height: 32px;
-    display: flex; align-items: center; justify-content: center;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--bg-elevated);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
@@ -283,9 +448,11 @@
   }
   .hero-glow {
     position: absolute;
-    top: -60px; left: 50%;
+    top: -60px;
+    left: 50%;
     transform: translateX(-50%);
-    width: 800px; height: 400px;
+    width: 800px;
+    height: 400px;
     background: radial-gradient(ellipse at center, rgba(230,192,116,0.12) 0%, transparent 70%);
     pointer-events: none;
   }
@@ -568,381 +735,417 @@
 
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="container navbar-inner">
-      <a href="#" class="navbar-brand">
-        <div class="navbar-logo">🌍</div>
-        <span class="navbar-name">Stream The World</span>
-      </a>
+  <!-- SPLASH SCREEN -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="beam"></div>
+    <div class="splash-wrap">
+      <div class="splash-logo">ORION</div>
+      <div class="splash-rule"></div>
+      <div class="splash-tag">S T R E A M Z</div>
+      <div class="splash-slogan">Stream Beyond Limits</div>
+    </div>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+    <div class="splash-hint" id="splashHint">Click to enter ➜</div>
+  </div>
 
-      <div class="navbar-links">
-        <a href="#features" class="nav-link">Features</a>
-        <a href="#install" class="nav-link">Install</a>
-        <a href="#services" class="nav-link">Services</a>
-        <a href="#codes" class="nav-link">Codes</a>
+  <!-- MAIN CONTENT -->
+  <div class="main-content" id="mainContent">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="container navbar-inner">
+        <a href="#" class="navbar-brand">
+          <div class="navbar-logo">🌍</div>
+          <span class="navbar-name">Stream The World</span>
+        </a>
+
+        <div class="navbar-links">
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#install" class="nav-link">Install</a>
+          <a href="#services" class="nav-link">Services</a>
+          <a href="#codes" class="nav-link">Codes</a>
+        </div>
+
+        <div class="navbar-actions">
+          <a href="#" class="btn btn-primary" style="padding:8px 16px;font-size:0.82rem;">
+            Get Started
+          </a>
+        </div>
+
+        <div class="hamburger" id="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </div>
       </div>
+    </nav>
 
-      <div class="navbar-actions">
-        <a href="#" class="btn btn-primary" style="padding:8px 16px;font-size:0.82rem;">
+    <!-- Mobile nav -->
+    <div class="mobile-nav" id="mobile-nav">
+      <div class="mobile-nav-drawer">
+        <div class="mobile-nav-header">
+          <div class="navbar-brand">
+            <div class="navbar-logo">🌍</div>
+            <span class="navbar-name">STW</span>
+          </div>
+          <div class="mobile-nav-close" id="mobile-nav-close">✕</div>
+        </div>
+        <a href="#features">Features</a>
+        <a href="#install">Install</a>
+        <a href="#services">Services</a>
+        <a href="#codes">Codes</a>
+        <hr style="border-color:var(--border);margin:8px 0;" />
+        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">
           Get Started
         </a>
       </div>
-
-      <div class="hamburger" id="hamburger" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </div>
+      <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
     </div>
-  </nav>
 
-  <!-- Mobile nav -->
-  <div class="mobile-nav" id="mobile-nav">
-    <div class="mobile-nav-drawer">
-      <div class="mobile-nav-header">
-        <div class="navbar-brand">
-          <div class="navbar-logo">🌍</div>
-          <span class="navbar-name">STW</span>
-        </div>
-        <div class="mobile-nav-close" id="mobile-nav-close">✕</div>
-      </div>
-      <a href="#features">Features</a>
-      <a href="#install">Install</a>
-      <a href="#services">Services</a>
-      <a href="#codes">Codes</a>
-      <hr style="border-color:var(--border);margin:8px 0;" />
-      <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">
-        Get Started
-      </a>
-    </div>
-    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
-  </div>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="container">
+        <div class="hero-inner">
+          <div class="hero-content">
+            <div class="hero-eyebrow">
+              <div class="badge"><span class="badge-dot"></span> Now Available Globally</div>
+            </div>
+            <h1 class="hero-title">
+              Stream <span>Everything</span>.<br />Anywhere, Anytime.
+            </h1>
+            <p class="hero-subtitle">
+              Stream The World brings you the ultimate cinematic experience with unlimited access to movies, TV shows, live content, and exclusive originals all in one elegant platform.
+            </p>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-glow"></div>
-    <div class="container">
-      <div class="hero-inner">
-        <div class="hero-content">
-          <div class="hero-eyebrow">
-            <div class="badge"><span class="badge-dot"></span> Now Available Globally</div>
+            <div class="hero-actions">
+              <a href="#install" class="btn btn-primary btn-lg">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Start Streaming Now
+              </a>
+              <a href="#features" class="btn btn-outline btn-lg">
+                Learn More
+              </a>
+            </div>
           </div>
-          <h1 class="hero-title">
-            Stream <span>Everything</span>.<br />Anywhere, Anytime.
-          </h1>
-          <p class="hero-subtitle">
-            Stream The World brings you the ultimate cinematic experience with unlimited access to movies, TV shows, live content, and exclusive originals all in one elegant platform.
-          </p>
 
-          <div class="hero-actions">
-            <a href="#install" class="btn btn-primary btn-lg">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Start Streaming Now
-            </a>
-            <a href="#features" class="btn btn-outline btn-lg">
-              Learn More
-            </a>
+          <div class="hero-screenshot">
+            <div class="hero-screenshot-wrap">
+              <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #1e2330 0%, #252b38 100%);">
+                <rect width="400" height="300" fill="#1e2330"/>
+                <text x="200" y="150" font-family="Oswald" font-size="48" font-weight="700" fill="#e6c074" text-anchor="middle" dominant-baseline="middle">STREAM</text>
+                <text x="200" y="200" font-family="Oswald" font-size="48" font-weight="700" fill="#f3deae" text-anchor="middle" dominant-baseline="middle">THE WORLD</text>
+                <circle cx="200" cy="250" r="30" fill="none" stroke="#e6c074" stroke-width="2" opacity="0.5"/>
+              </svg>
+            </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="hero-screenshot">
-          <div class="hero-screenshot-wrap">
-            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #1e2330 0%, #252b38 100%);">
-              <rect width="400" height="300" fill="#1e2330"/>
-              <text x="200" y="150" font-family="Oswald" font-size="48" font-weight="700" fill="#e6c074" text-anchor="middle" dominant-baseline="middle">STREAM</text>
-              <text x="200" y="200" font-family="Oswald" font-size="48" font-weight="700" fill="#f3deae" text-anchor="middle" dominant-baseline="middle">THE WORLD</text>
-              <circle cx="200" cy="250" r="30" fill="none" stroke="#e6c074" stroke-width="2" opacity="0.5"/>
+    <hr class="divider" />
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-label">What's included</div>
+        <h2 class="section-title">Everything you want to watch,<br />in one premium platform.</h2>
+        <p class="section-desc">Stream The World delivers an enormous library of content across every genre — all accessible instantly with our cinematic interface.</p>
+
+        <div class="features-grid">
+          <div class="card">
+            <div class="card-icon">🎬</div>
+            <div class="card-title">Movies</div>
+            <div class="card-body">Thousands of films from blockbusters to indie classics, all in stunning quality.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📺</div>
+            <div class="card-title">TV Shows</div>
+            <div class="card-body">Binge-worthy series from every era and genre, always updated with fresh content.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📡</div>
+            <div class="card-title">Live Channels</div>
+            <div class="card-body">100+ live TV channels for news, sports, entertainment, and exclusive events.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🌟</div>
+            <div class="card-title">Exclusive Originals</div>
+            <div class="card-body">Premium original content produced exclusively for our streaming platform.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📥</div>
+            <div class="card-title">Offline Downloads</div>
+            <div class="card-body">Download your favorites and watch them anywhere, even without internet.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚙️</div>
+            <div class="card-title">Smart Recommendations</div>
+            <div class="card-body">AI-powered suggestions tailored to your unique taste and viewing history.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🎭</div>
+            <div class="card-title">Multi-Profile Support</div>
+            <div class="card-body">Create personalized profiles for each family member with parental controls.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📱</div>
+            <div class="card-title">Multi-Device Streaming</div>
+            <div class="card-body">Watch on phones, tablets, TVs, and more — all at the same time.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- SCREENSHOTS -->
+    <section class="screenshots-section">
+      <div class="container">
+        <div class="screenshots-header">
+          <div class="section-label">In action</div>
+          <h2 class="section-title">A beautifully crafted cinematic interface</h2>
+          <p class="section-desc" style="margin:0 auto;">Designed to look stunning on any screen — phones, tablets, Fire TV sticks and Android TV boxes.</p>
+        </div>
+        <div class="screenshots-grid">
+          <div class="screenshot-card">
+            <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #1e2330 0%, #252b38 100%); width: 100%; height: 100%;">
+              <rect width="280" height="175" fill="#1e2330"/>
+              <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#e6c074" text-anchor="middle" dominant-baseline="middle">SCREEN 1</text>
+            </svg>
+          </div>
+          <div class="screenshot-card">
+            <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #252b38 0%, #1e2330 100%); width: 100%; height: 100%;">
+              <rect width="280" height="175" fill="#252b38"/>
+              <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#f3deae" text-anchor="middle" dominant-baseline="middle">SCREEN 2</text>
+            </svg>
+          </div>
+          <div class="screenshot-card">
+            <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #1e2330 0%, #252b38 100%); width: 100%; height: 100%;">
+              <rect width="280" height="175" fill="#1e2330"/>
+              <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#e6c074" text-anchor="middle" dominant-baseline="middle">SCREEN 3</text>
+            </svg>
+          </div>
+          <div class="screenshot-card">
+            <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #252b38 0%, #1e2330 100%); width: 100%; height: 100%;">
+              <rect width="280" height="175" fill="#252b38"/>
+              <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#f3deae" text-anchor="middle" dominant-baseline="middle">SCREEN 4</text>
+            </svg>
+          </div>
+          <div class="screenshot-card">
+            <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #1e2330 0%, #252b38 100%); width: 100%; height: 100%;">
+              <rect width="280" height="175" fill="#1e2330"/>
+              <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#e6c074" text-anchor="middle" dominant-baseline="middle">SCREEN 5</text>
+            </svg>
+          </div>
+          <div class="screenshot-card">
+            <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #252b38 0%, #1e2330 100%); width: 100%; height: 100%;">
+              <rect width="280" height="175" fill="#252b38"/>
+              <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#f3deae" text-anchor="middle" dominant-baseline="middle">SCREEN 6</text>
             </svg>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <hr class="divider" />
+    <!-- INSTALL -->
+    <section class="section" id="install">
+      <div class="container install-section">
+        <div class="section-label">Getting started</div>
+        <h2 class="section-title">Up and running in minutes</h2>
+        <p class="section-desc" style="margin:0 auto;">Stream The World is a sideload-ready platform for Android. Follow these simple steps to get started.</p>
 
-  <!-- FEATURES -->
-  <section class="section" id="features">
-    <div class="container">
-      <div class="section-label">What's included</div>
-      <h2 class="section-title">Everything you want to watch,<br />in one premium platform.</h2>
-      <p class="section-desc">Stream The World delivers an enormous library of content across every genre — all accessible instantly with our cinematic interface.</p>
+        <div class="install-steps">
+          <div class="step-card">
+            <div class="step-num">01</div>
+            <div class="step-title">Choose Your Device</div>
+            <div class="step-body">Stream The World works on Android phones, tablets, Fire TV, and Android TV boxes.</div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">02</div>
+            <div class="step-title">Download the App</div>
+            <div class="step-body">Visit our download page or use a downloader app to get the latest version.</div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">03</div>
+            <div class="step-title">Install & Open</div>
+            <div class="step-body">Install the app and launch Stream The World on your device.</div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">04</div>
+            <div class="step-title">Start Streaming</div>
+            <div class="step-body">Browse our massive library and start watching your favorite content instantly!</div>
+          </div>
+        </div>
 
-      <div class="features-grid">
-        <div class="card">
-          <div class="card-icon">🎬</div>
-          <div class="card-title">Movies</div>
-          <div class="card-body">Thousands of films from blockbusters to indie classics, all in stunning quality.</div>
-        </div>
-        <div class="card">
-          <div class="card-icon">📺</div>
-          <div class="card-title">TV Shows</div>
-          <div class="card-body">Binge-worthy series from every era and genre, always updated with fresh content.</div>
-        </div>
-        <div class="card">
-          <div class="card-icon">📡</div>
-          <div class="card-title">Live Channels</div>
-          <div class="card-body">100+ live TV channels for news, sports, entertainment, and exclusive events.</div>
-        </div>
-        <div class="card">
-          <div class="card-icon">🌟</div>
-          <div class="card-title">Exclusive Originals</div>
-          <div class="card-body">Premium original content produced exclusively for our streaming platform.</div>
-        </div>
-        <div class="card">
-          <div class="card-icon">📥</div>
-          <div class="card-title">Offline Downloads</div>
-          <div class="card-body">Download your favorites and watch them anywhere, even without internet.</div>
-        </div>
-        <div class="card">
-          <div class="card-icon">⚙️</div>
-          <div class="card-title">Smart Recommendations</div>
-          <div class="card-body">AI-powered suggestions tailored to your unique taste and viewing history.</div>
-        </div>
-        <div class="card">
-          <div class="card-icon">🎭</div>
-          <div class="card-title">Multi-Profile Support</div>
-          <div class="card-body">Create personalized profiles for each family member with parental controls.</div>
-        </div>
-        <div class="card">
-          <div class="card-icon">📱</div>
-          <div class="card-title">Multi-Device Streaming</div>
-          <div class="card-body">Watch on phones, tablets, TVs, and more — all at the same time.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- SCREENSHOTS -->
-  <section class="screenshots-section">
-    <div class="container">
-      <div class="screenshots-header">
-        <div class="section-label">In action</div>
-        <h2 class="section-title">A beautifully crafted cinematic interface</h2>
-        <p class="section-desc" style="margin:0 auto;">Designed to look stunning on any screen — phones, tablets, Fire TV sticks and Android TV boxes.</p>
-      </div>
-      <div class="screenshots-grid">
-        <div class="screenshot-card">
-          <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #1e2330 0%, #252b38 100%); width: 100%; height: 100%;">
-            <rect width="280" height="175" fill="#1e2330"/>
-            <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#e6c074" text-anchor="middle" dominant-baseline="middle">SCREEN 1</text>
-          </svg>
-        </div>
-        <div class="screenshot-card">
-          <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #252b38 0%, #1e2330 100%); width: 100%; height: 100%;">
-            <rect width="280" height="175" fill="#252b38"/>
-            <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#f3deae" text-anchor="middle" dominant-baseline="middle">SCREEN 2</text>
-          </svg>
-        </div>
-        <div class="screenshot-card">
-          <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #1e2330 0%, #252b38 100%); width: 100%; height: 100%;">
-            <rect width="280" height="175" fill="#1e2330"/>
-            <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#e6c074" text-anchor="middle" dominant-baseline="middle">SCREEN 3</text>
-          </svg>
-        </div>
-        <div class="screenshot-card">
-          <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #252b38 0%, #1e2330 100%); width: 100%; height: 100%;">
-            <rect width="280" height="175" fill="#252b38"/>
-            <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#f3deae" text-anchor="middle" dominant-baseline="middle">SCREEN 4</text>
-          </svg>
-        </div>
-        <div class="screenshot-card">
-          <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #1e2330 0%, #252b38 100%); width: 100%; height: 100%;">
-            <rect width="280" height="175" fill="#1e2330"/>
-            <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#e6c074" text-anchor="middle" dominant-baseline="middle">SCREEN 5</text>
-          </svg>
-        </div>
-        <div class="screenshot-card">
-          <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #252b38 0%, #1e2330 100%); width: 100%; height: 100%;">
-            <rect width="280" height="175" fill="#252b38"/>
-            <text x="140" y="87" font-family="Oswald" font-size="24" font-weight="700" fill="#f3deae" text-anchor="middle" dominant-baseline="middle">SCREEN 6</text>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- INSTALL -->
-  <section class="section" id="install">
-    <div class="container install-section">
-      <div class="section-label">Getting started</div>
-      <h2 class="section-title">Up and running in minutes</h2>
-      <p class="section-desc" style="margin:0 auto;">Stream The World is a sideload-ready platform for Android. Follow these simple steps to get started.</p>
-
-      <div class="install-steps">
-        <div class="step-card">
-          <div class="step-num">01</div>
-          <div class="step-title">Choose Your Device</div>
-          <div class="step-body">Stream The World works on Android phones, tablets, Fire TV, and Android TV boxes.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">02</div>
-          <div class="step-title">Download the App</div>
-          <div class="step-body">Visit our download page or use a downloader app to get the latest version.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">03</div>
-          <div class="step-title">Install & Open</div>
-          <div class="step-body">Install the app and launch Stream The World on your device.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-num">04</div>
-          <div class="step-title">Start Streaming</div>
-          <div class="step-body">Browse our massive library and start watching your favorite content instantly!</div>
-        </div>
-      </div>
-
-      <a href="#" class="btn btn-primary btn-lg">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download Now
-      </a>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- CODES -->
-  <section class="section" id="codes">
-    <div class="container">
-      <div class="section-label">Quick access</div>
-      <h2 class="section-title">Codes & Links</h2>
-      <p class="section-desc">Stream The World is your gateway to premium streaming entertainment worldwide.</p>
-
-      <div class="codes-grid">
-        <div class="code-card">
-          <div class="code-card-label">Access Code</div>
-          <div class="code-value">STW</div>
-          <div class="code-hint">Use this code to quickly access Stream The World</div>
-        </div>
-        <div class="code-card">
-          <div class="code-card-label">Community Code</div>
-          <div class="code-value">ORION</div>
-          <div class="code-hint">Join the Orion Streamz community for exclusive content</div>
-        </div>
-      </div>
-
-      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:36px;">
         <a href="#" class="btn btn-primary btn-lg">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-          View on GitHub
-        </a>
-        <a href="#" class="btn btn-outline btn-lg">
-          Learn More
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Now
         </a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <hr class="divider" />
+    <hr class="divider" />
 
-  <!-- SERVICES -->
-  <section class="section" id="services">
-    <div class="container">
-      <div class="section-label">Premium Features</div>
-      <h2 class="section-title">Enhance your streaming experience</h2>
-      <p class="section-desc">
-        Stream The World works perfectly out of the box — but connecting premium services unlocks higher-quality streams, faster speeds, and exclusive features. <strong style="color:var(--gold)">None of these services are required.</strong>
-      </p>
+    <!-- CODES -->
+    <section class="section" id="codes">
+      <div class="container">
+        <div class="section-label">Quick access</div>
+        <h2 class="section-title">Codes & Links</h2>
+        <p class="section-desc">Stream The World is your gateway to premium streaming entertainment worldwide.</p>
 
-      <div class="services-grid">
-
-        <div class="service-card">
-          <div class="service-header">
-            <div class="service-name">Premium Streaming</div>
-            <div class="service-status">Optional</div>
+        <div class="codes-grid">
+          <div class="code-card">
+            <div class="code-card-label">Access Code</div>
+            <div class="code-value">STW</div>
+            <div class="code-hint">Use this code to quickly access Stream The World</div>
           </div>
-          <div class="service-desc">Unlock high-quality 4K HDR streaming with premium debrid services. Enjoy ultra-fast playback without buffering.</div>
-          <div class="service-note">⚡ Lightning-fast streams up to 1 Gbps speeds</div>
-          <a href="#" class="btn btn-primary" style="margin-top:auto;">Learn More →</a>
+          <div class="code-card">
+            <div class="code-card-label">Community Code</div>
+            <div class="code-value">ORION</div>
+            <div class="code-hint">Join the Orion Streamz community for exclusive content</div>
+          </div>
         </div>
 
-        <div class="service-card">
-          <div class="service-header">
-            <div class="service-name">Multi-Host Support</div>
-            <div class="service-status">Optional</div>
-          </div>
-          <div class="service-desc">Connect to multiple premium hosts for maximum content availability. Access 200+ file hosts with a single integration.</div>
-          <div class="service-note">🔗 One integration, unlimited possibilities</div>
-          <a href="#" class="btn btn-primary" style="margin-top:auto;">Learn More →</a>
-        </div>
-
-        <div class="service-card">
-          <div class="service-header">
-            <div class="service-name">Cloud Storage</div>
-            <div class="service-status">Optional</div>
-          </div>
-          <div class="service-desc">Store and cache your content in the cloud for instant access. Enjoy unlimited torrent caching and instant playback.</div>
-          <div class="service-note">☁️ Unlimited cloud-cached content streaming</div>
-          <a href="#" class="btn btn-primary" style="margin-top:auto;">Learn More →</a>
-        </div>
-
-        <div class="service-card">
-          <div class="service-header">
-            <div class="service-name">Watch History Sync</div>
-            <div class="service-status">Optional</div>
-          </div>
-          <div class="service-desc">Sync your watch history across all your devices. Track everything and never lose your place in any show.</div>
-          <div class="service-note">🔄 Automatic sync across all devices</div>
-          <a href="#" class="btn btn-primary" style="margin-top:auto;">Learn More →</a>
-        </div>
-
-        <div class="service-card">
-          <div class="service-header">
-            <div class="service-name">Torrent Caching</div>
-            <div class="service-status">Optional</div>
-          </div>
-          <div class="service-desc">Transform torrents into instant streams. Our caching service provides cached torrents for seamless 4K HDR streaming.</div>
-          <div class="service-note">🎬 Instant access to cached torrents</div>
-          <a href="#" class="btn btn-primary" style="margin-top:auto;">Learn More →</a>
-        </div>
-
-        <div class="service-card">
-          <div class="service-header">
-            <div class="service-name">Live TV Support</div>
-            <div class="service-status">Built-in</div>
-          </div>
-          <div class="service-desc">Stream The World has full Live TV support built right in. Bring your own playlist and enjoy hundreds of channels.</div>
-          <div class="service-note">📺 M3U playlists & Xtream Codes support</div>
-          <a href="#install" class="btn btn-outline" style="margin-top:auto;">Get Started →</a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- FOOTER -->
-  <footer class="footer" id="contact">
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <h3>🌍 Stream The World</h3>
-          <p>Your ultimate destination for premium streaming entertainment. Watch everything, anywhere, anytime with our cinematic platform powered by Orion Streamz.</p>
-        </div>
-        <div>
-          <div class="footer-col-title">Quick Links</div>
-          <div class="footer-links">
-            <a href="#features">Features</a>
-            <a href="#install">Installation</a>
-            <a href="#services">Services</a>
-            <a href="#codes">Codes</a>
-          </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:36px;">
+          <a href="#" class="btn btn-primary btn-lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            View on GitHub
+          </a>
+          <a href="#" class="btn btn-outline btn-lg">
+            Learn More
+          </a>
         </div>
       </div>
-      <div class="footer-bottom">
-        <span class="footer-copy">&copy; 2026 Stream The World by Orion Streamz. All rights reserved.</span>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- SERVICES -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-label">Premium Features</div>
+        <h2 class="section-title">Enhance your streaming experience</h2>
+        <p class="section-desc">
+          Stream The World works perfectly out of the box — but connecting premium services unlocks higher-quality streams, faster speeds, and exclusive features. <strong style="color:var(--gold)">None of these services are required.</strong>
+        </p>
+
+        <div class="services-grid">
+
+          <div class="service-card">
+            <div class="service-header">
+              <div class="service-name">Premium Streaming</div>
+              <div class="service-status">Optional</div>
+            </div>
+            <div class="service-desc">Unlock high-quality 4K HDR streaming with premium debrid services. Enjoy ultra-fast playback without buffering.</div>
+            <div class="service-note">⚡ Lightning-fast streams up to 1 Gbps speeds</div>
+            <a href="#" class="btn btn-primary" style="margin-top:auto;">Learn More →</a>
+          </div>
+
+          <div class="service-card">
+            <div class="service-header">
+              <div class="service-name">Multi-Host Support</div>
+              <div class="service-status">Optional</div>
+            </div>
+            <div class="service-desc">Connect to multiple premium hosts for maximum content availability. Access 200+ file hosts with a single integration.</div>
+            <div class="service-note">🔗 One integration, unlimited possibilities</div>
+            <a href="#" class="btn btn-primary" style="margin-top:auto;">Learn More →</a>
+          </div>
+
+          <div class="service-card">
+            <div class="service-header">
+              <div class="service-name">Cloud Storage</div>
+              <div class="service-status">Optional</div>
+            </div>
+            <div class="service-desc">Store and cache your content in the cloud for instant access. Enjoy unlimited torrent caching and instant playback.</div>
+            <div class="service-note">☁️ Unlimited cloud-cached content streaming</div>
+            <a href="#" class="btn btn-primary" style="margin-top:auto;">Learn More →</a>
+          </div>
+
+          <div class="service-card">
+            <div class="service-header">
+              <div class="service-name">Watch History Sync</div>
+              <div class="service-status">Optional</div>
+            </div>
+            <div class="service-desc">Sync your watch history across all your devices. Track everything and never lose your place in any show.</div>
+            <div class="service-note">🔄 Automatic sync across all devices</div>
+            <a href="#" class="btn btn-primary" style="margin-top:auto;">Learn More →</a>
+          </div>
+
+          <div class="service-card">
+            <div class="service-header">
+              <div class="service-name">Torrent Caching</div>
+              <div class="service-status">Optional</div>
+            </div>
+            <div class="service-desc">Transform torrents into instant streams. Our caching service provides cached torrents for seamless 4K HDR streaming.</div>
+            <div class="service-note">🎬 Instant access to cached torrents</div>
+            <a href="#" class="btn btn-primary" style="margin-top:auto;">Learn More →</a>
+          </div>
+
+          <div class="service-card">
+            <div class="service-header">
+              <div class="service-name">Live TV Support</div>
+              <div class="service-status">Built-in</div>
+            </div>
+            <div class="service-desc">Stream The World has full Live TV support built right in. Bring your own playlist and enjoy hundreds of channels.</div>
+            <div class="service-note">📺 M3U playlists & Xtream Codes support</div>
+            <a href="#install" class="btn btn-outline" style="margin-top:auto;">Get Started →</a>
+          </div>
+
+        </div>
       </div>
-    </div>
-  </footer>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- FOOTER -->
+    <footer class="footer" id="contact">
+      <div class="container">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <h3>🌍 Stream The World</h3>
+            <p>Your ultimate destination for premium streaming entertainment. Watch everything, anywhere, anytime with our cinematic platform powered by Orion Streamz.</p>
+          </div>
+          <div>
+            <div class="footer-col-title">Quick Links</div>
+            <div class="footer-links">
+              <a href="#features">Features</a>
+              <a href="#install">Installation</a>
+              <a href="#services">Services</a>
+              <a href="#codes">Codes</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span class="footer-copy">&copy; 2026 Stream The World by Orion Streamz. All rights reserved.</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
 
   <script>
+    const splashScreen = document.getElementById('splashScreen');
+    const mainContent = document.getElementById('mainContent');
+    const splashHint = document.getElementById('splashHint');
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobile-nav');
     const mobileNavClose = document.getElementById('mobile-nav-close');
     const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
 
+    // Hide splash screen after animation
+    function hideSplash() {
+      splashScreen.classList.add('hidden');
+      mainContent.style.display = 'block';
+    }
+
+    // Auto-hide splash after 3.5 seconds
+    setTimeout(hideSplash, 3500);
+
+    // Allow click to skip splash
+    splashHint.addEventListener('click', hideSplash);
+    splashScreen.addEventListener('click', hideSplash);
+
+    // Mobile menu toggle
     hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
     mobileNavClose.addEventListener('click', () => mobileNav.classList.remove('open'));
     mobileNavOverlay.addEventListener('click', () => mobileNav.classList.remove('open'));
