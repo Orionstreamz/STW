@@ -1342,9 +1342,10 @@
     function playAudio() { const p = splashAudio.play(); if (p !== undefined) p.catch(() => {}); }
 
     function hideSplashScreen() {
+      playAudio(); // this click is a valid user gesture — guarantee the intro is playing
       splashScreen.classList.add('hidden');
       mainContent.classList.add('visible');
-      splashAudio.pause();
+      // let the intro keep playing into the page instead of cutting it off
     }
 
     // 1) Try to auto-play the intro the instant the page loads.
